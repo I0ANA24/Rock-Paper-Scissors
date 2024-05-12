@@ -1,1 +1,1 @@
-# Rock-Paper-Scissors
+This game is played on the console and has 5 rounds in which the players choose one of the 3 variants: Rock, Paper or Scissors, and at the end of the rounds the winner is announced. Also, at the end of each round, the winner of the respective round and the players' choices are displayed.
