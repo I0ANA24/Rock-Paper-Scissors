@@ -3,66 +3,89 @@ function getComputerChoice() {
     let randomChoice = Math.floor(randomNumber * 3);
 
     if(randomChoice === 0)
-        return "Rock";
+        return "rock";
     else if(randomChoice === 1)
-        return "Paper";
-    return "Scissors";
+        return "paper";
+    return "scissors";
 }
 
-function getHumanChoice() {
-    let input = prompt("Please enter your choice: Rock, Paper or Scissors").toLowerCase();
-    return input[0].toUpperCase() + input.slice(1);
-}
+let humanScore = 0;
+let computerScore = 0;
 
-function playRound(humanChoice, computerChoice) {
-    let result;
-    if(humanChoice === computerChoice) {
-        console.log("It's a draw!");
-        return 0;
-    } else {
-        switch(humanChoice) {
-            case "Rock":
-                result = computerChoice === "Paper" ? "You lose! Paper beats Rock" :
-                    "You won! Rock beats Scissors";
-                break;
-            case "Paper":
-                result = computerChoice === "Rock" ? "You won! Paper beats Rock" :
-                    "You lose! Scissors beats Paper";
-                break;
-            case "Scissors":
-                result = computerChoice === "Rock" ? "You lose! Rock beats Scissors" :
-                    "You won! Scissors beats Paper";
-                break;
+function playRound() {
+    const final = document.querySelector("#final");
+
+    if(humanScore < 5 && computerScore < 5) {
+        //human choice
+        let humanChoice;
+        if(this.id == "btn1") {
+            humanChoice = "rock";
+        } else if(this.id == "btn2") {
+            humanChoice = "paper";
+        } else if(this.id == "btn3") {
+            humanChoice = "scissors";
+        } else {
+            final.textContent = "Oops! Something went wrong.";
         }
 
-        console.log(result);
-        if(result[4] === 'w') {
-            return 1;
+        //computer choice
+        let computerChoice = getComputerChoice();
+
+        if(humanChoice === computerChoice) {
+            humanScore++;
+            computerScore++;
+            resultsParagraph.textContent = "It's a draw!"
+            playerScoreParagraph.textContent = humanScore;
+            computerScoreParagraph.textContent = computerScore;
         } else {
-            return 2;
+            let result;
+            switch(humanChoice) {
+                case "rock":
+                    result = computerChoice === "paper" ? "You lose! Paper beats Rock" :
+                        "You won! Rock beats Scissors";
+                    break;
+                case "paper":
+                    result = computerChoice === "rock" ? "You won! Paper beats Rock" :
+                        "You lose! Scissors beats Paper";
+                    break;
+                case "scissors":
+                    result = computerChoice === "rock" ? "You lose! Rock beats Scissors" :
+                        "You won! Scissors beats Paper";
+                    break;
+            }
+
+            if(result.includes("won")){
+                humanScore++;
+                resultsParagraph.textContent = result;
+                playerScoreParagraph.textContent = humanScore;
+            } else {
+                computerScore++;
+                resultsParagraph.textContent = result;
+                computerScoreParagraph.textContent = computerScore;
+            }
+        }
+    } else {
+        if(humanScore === 5){
+            final.textContent = "Yaaay! You won!";
+        } else {
+            final.textContent = "I'm sorry! You lose :(("
         }
     }
 }
 
 function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-
-    while(humanScore < 5 && computerScore < 5){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-
-        let result = playRound(humanSelection, computerSelection);
-        if(result === 1)
-            humanScore++;
-        else if(result === 2)
-            computerScore++;
-
-        console.log(humanSelection);
-        console.log(computerSelection);            
-    }
-
-    console.log(`The score is ${humanScore} for you and ${computerScore} for computer`);
+    const btn = document.querySelectorAll("button");
+    btn.forEach((button) => {
+        button.addEventListener("click", playRound);
+    })
 }
+
+///DOM for results, player score and computer score
+const resultsParagraph = document.querySelector("#results");
+const playerScoreParagraph = document.querySelector("#player-score");
+const computerScoreParagraph = document.querySelector("#computer-score");
+resultsParagraph.textContent = "Please click a button until you or the computer reaches a score of 5.";
+playerScoreParagraph.textContent = 0;
+computerScoreParagraph.textContent = 0;
 
 playGame();
