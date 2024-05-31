@@ -10,6 +10,7 @@ function getComputerChoice() {
 }
 
 function initialize() {
+    resultsParagraph.textContent = "";
     humanScore = 0;
     playerScoreParagraph.textContent = humanScore;
     computerScore = 0;
